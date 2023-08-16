@@ -1,12 +1,35 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const model = require('./models/model')
+const path = require('path')
 
 const app = express()
  
 app.use(express.json())
 
+//set view engine
+app.set('view engine', 'ejs')
+
+//load assets
+app.use('/css',express.static(path.resolve(__dirname,'assets/css')))
+app.use('/img',express.static(path.resolve(__dirname,'assets/img')))
+app.use('/js',express.static(path.resolve(__dirname,'assets/js')))
+
 //routes
+
+app.get('/', (req,res)=>{
+//  res.send('Hello Task Manager')
+    res.render('index.ejs')
+})
+
+app.get('/add-task', (req,res)=>{
+    res.render('add_task.ejs')
+})
+
+app.get('/update-task', (req,res)=>{
+    res.render('update_task.ejs')
+})
+
 app.post('/addtask', async (req,res)=>{
     try {
         const addtask = await model.create(req.body)
